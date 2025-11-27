@@ -1,0 +1,2 @@
+# No runtime dependencies for basic todo application
+# Tag system uses only Python standard library
