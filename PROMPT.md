@@ -1,0 +1,187 @@
+# Task: Add Tag System with Automated Testing
+
+Enhance the provided todo application by implementing a **tag-based categorization system** with **comprehensive automated testing** and **one-command setup**.
+
+---
+
+## Goal
+Add tag functionality for task organization with filtering capabilities and automated test environment.
+
+---
+
+## Feature: Tag System
+
+### Core Capabilities
+1. Assign multiple tags to tasks
+2. Filter by single/multiple tags (AND/OR logic)
+3. View tag statistics
+4. Add/remove tags from existing tasks
+
+### Example Usage
+```python
+add_todo("Write report", tags=["work", "urgent"])
+list_todos(filter_tag="work")  # Filter by tag
+show_tag_stats()  # work (1), urgent (1)
+```
+
+---
+
+## Deliverables
+
+### 1. Code Implementation
+- `todo_with_tags.py` - Enhanced with tags, type hints, docstrings, error handling
+
+### 2. Test Suite
+- `test_todo_with_tags.py` - Unit tests, integration tests, edge cases
+- Use pytest, fixtures, parametrize
+
+### 3. Environment Setup (Both PowerShell & Bash)
+- `requirements.txt` & `requirements-dev.txt` - Dependencies (pytest>=7.4.0)
+- `setup_env.ps1` & `setup_env.sh` - Auto setup: check Python 3.8+, create venv, install deps
+- `run_tests.ps1` & `run_tests.sh` - One-command testing: setup env, run tests, show results
+- `pytest.ini` - Test configuration
+- `.gitignore` - Python project exclusions
+
+### 4. Documentation
+- `README.md` - Overview, quick start, installation, usage, testing guide, API docs, troubleshooting
+- `FEATURE_SPEC.md` - Problem statement, use cases, requirements, success metrics
+
+---
+
+## Project Structure
+```
+project_root/
+├── todo.py                  # Original (provided)
+├── todo_with_tags.py        # Enhanced with tags
+├── test_todo_with_tags.py   # Test suite
+├── requirements.txt         # Dependencies
+├── requirements-dev.txt     # Test dependencies (pytest)
+├── pytest.ini              # Pytest config
+├── setup_env.ps1           # Windows setup
+├── setup_env.sh            # Linux/Mac setup
+├── run_tests.ps1           # Windows test runner
+├── run_tests.sh            # Linux/Mac test runner
+├── .gitignore             # Python exclusions
+├── README.md              # Full documentation
+└── FEATURE_SPEC.md        # Feature specification
+```
+
+---
+
+## Requirements
+
+### Functions to Implement
+```python
+def add_todo(task: str, tags: list[str] = None) -> None
+def list_todos(filter_tag: str = None) -> None
+def filter_by_tags(tags: list[str], match_all: bool = False) -> list
+def show_tag_stats() -> None
+def add_tag_to_task(index: int, tag: str) -> None
+def remove_tag_from_task(index: int, tag: str) -> None
+def list_all_tags() -> list[str]
+```
+
+### Test Categories
+1. **Unit Tests** - Individual functions, edge cases, None values, invalid types
+2. **Integration Tests** - Complete workflows (add → filter → remove)
+3. **Backward Compatibility** - Untagged tasks work, no breaking changes
+4. **Error Handling** - Empty lists, duplicates, invalid indices, case sensitivity
+
+### Setup Scripts
+
+**setup_env.ps1** (Windows):
+```powershell
+# Check Python 3.8+, create venv, activate, install deps, verify
+```
+
+**setup_env.sh** (Linux/Mac):
+```bash
+#!/bin/bash
+# Check Python 3.8+, create venv, activate, install deps, verify
+```
+
+**run_tests.ps1** (Windows):
+```powershell
+# Check/create venv, activate, install deps if needed, run pytest, display results
+```
+
+**run_tests.sh** (Linux/Mac):
+```bash
+#!/bin/bash
+# Check/create venv, activate, install deps if needed, run pytest, display results
+```
+
+**pytest.ini**:
+```ini
+[pytest]
+testpaths = .
+python_files = test_*.py
+addopts = -v --tb=short
+```
+
+### README Sections
+1. Overview & features
+2. Quick Start (Windows: `.\setup_env.ps1; .\run_tests.ps1` | Linux/Mac: `./setup_env.sh; ./run_tests.sh`)
+3. Installation (both platforms)
+4. Usage examples
+5. Testing guide (run all/specific tests, platform-specific commands)
+6. Project structure
+7. API documentation
+8. Development setup
+9. Before/after comparison
+10. Troubleshooting
+
+---
+
+## Implementation Hints
+
+### Data Structure
+```python
+# Before: todos = [{"task": "...", "completed": False}]
+# After:  todos = [{"task": "...", "completed": False, "tags": ["work", "urgent"]}]
+```
+
+### Filter Logic
+```python
+# Single: [t for t in todos if filter_tag in t.get("tags", [])]
+# AND: [t for t in todos if all(tag in t.get("tags", []) for tag in filter_tags)]
+# OR: [t for t in todos if any(tag in t.get("tags", []) for tag in filter_tags)]
+```
+
+### Test Example
+```python
+import pytest
+from todo_with_tags import filter_by_tags
+
+def test_filter_by_tags_and():
+    todos = [
+        {"task": "Task 1", "tags": ["work", "urgent"]},
+        {"task": "Task 2", "tags": ["work"]}
+    ]
+    result = filter_by_tags(todos, ["work", "urgent"], match_all=True)
+    assert len(result) == 1
+    assert result[0]["task"] == "Task 1"
+
+@pytest.fixture
+def sample_todos():
+    return [
+        {"task": "Task 1", "completed": False, "tags": ["work"]},
+        {"task": "Task 2", "completed": True, "tags": ["personal"]}
+    ]
+```
+
+---
+
+## Success Criteria
+
+✅ Tag system implemented with all 7 functions  
+✅ All tests pass consistently  
+✅ Setup scripts work on both Windows (ps1) and Linux/Mac (sh)  
+✅ One-command setup and testing on both platforms  
+✅ README includes all 10 sections with platform-specific instructions  
+✅ Backward compatible, no breaking changes  
+✅ New developer can setup and run tests in < 5 min  
+
+---
+
+**Execution**: Analyze → Specify → Implement → Test → Automate → Document → Verify
